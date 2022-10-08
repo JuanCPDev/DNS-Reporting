@@ -1,0 +1,4 @@
+/.idea/
+/Server/.idea/
+/Server/target/
+/Server/src/main/resources/pihole-FTL.db
