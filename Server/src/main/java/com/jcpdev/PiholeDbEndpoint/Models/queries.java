@@ -14,8 +14,6 @@ public class queries {
     @Column
     private String client;
     @Column
-    private int type;
-    @Column
     private int status;
     @Column
     private String domain;
@@ -27,10 +25,6 @@ public class queries {
 
     public Integer getId() {
         return id;
-    }
-
-    public int getType() {
-        return type;
     }
 
     public int getStatus() {
