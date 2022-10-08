@@ -19,11 +19,6 @@ public class ApiController {
     private queriesRepo queriesRepo;
 
 
-    @GetMapping(value = "/")
-    public String getPage() {
-        return "welcome";
-    }
-
     @GetMapping(value = "/allevents")
     public List<queries> getAllEvents() {
         return queriesRepo.findAll();
@@ -54,25 +49,51 @@ public class ApiController {
         return permittedEventList;
     }
 
-    @GetMapping(value="/clients")
-    public List getClients(){
+    @GetMapping(value = "/clients")
+    public List getClients() {
         HashSet<String> clients = new HashSet<>();
-        for (queries Event: queriesRepo.findAll()){
+        for (queries Event : queriesRepo.findAll()) {
             clients.add(Event.getClient());
         }
         return Arrays.asList(clients.toArray());
     }
-    
-    @GetMapping(value = "/eventsbyclient")
-    public List<queries> eventsByClient(@PathVariable String client){
+
+    @GetMapping(value = "/clients/{client}")
+    public List<queries> eventsByClient(@PathVariable String client) {
         List<queries> eventsByClientList = new ArrayList<>();
 
-        for (queries Event: queriesRepo.findAll()){
-            if ((Event.getClient().equalsIgnoreCase(client))){
+        for (queries Event : queriesRepo.findAll()) {
+            if ((Event.getClient().equalsIgnoreCase(client))) {
                 eventsByClientList.add(Event);
             }
         }
 
         return eventsByClientList;
+    }
+
+    @GetMapping(value = "/clients/{client}/blocked")
+    public List<queries> blockedByClient(@PathVariable String client) {
+        List<queries> blockedByClientList = new ArrayList<>();
+
+        for (queries Event : queriesRepo.findAll()) {
+            if ((Event.getClient().equalsIgnoreCase(client) && Event.getStatus() == BLOCKED)) {
+
+                blockedByClientList.add(Event);
+            }
+        }
+        return blockedByClientList;
+    }
+
+    @GetMapping(value = "/clients/{client}/permitted")
+    public List<queries> permittedByClient(@PathVariable String client) {
+        List<queries> permittedByClientList = new ArrayList<>();
+
+        for (queries Event : queriesRepo.findAll()) {
+            if ((Event.getClient().equalsIgnoreCase(client) && Event.getStatus() != BLOCKED)) {
+
+                permittedByClientList.add(Event);
+            }
+        }
+        return permittedByClientList;
     }
 }
